@@ -1,0 +1,16 @@
+# I - install Container Runtime Interface (CRI)
+# apt-get install docker
+
+# II - install kubeadm, kubelet and kubectl
+apt-get install kubeadm kubelet kubectl
+
+
+# on master
+kubeadm init \
+--pod-network-cidr 10.244.0.0/16 \
+--apiserver-advertise-address=172.17.0.17
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+
+# on worker
+kubeadm join 172.17.0.17:6443 --token hzayxa.ro66ysfznuwlz7vg \
+    --discovery-token-ca-cert-hash sha256:6dcd08e34dc095024badb34a77e194c0828d1b89e76e16022156c4c7311fbc6c

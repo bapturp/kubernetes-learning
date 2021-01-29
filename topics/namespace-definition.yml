@@ -1,0 +1,36 @@
+---
+# Create a namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+...
+---
+# Deploy a pod in a namespace
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-dev
+  namespace: dev
+  labels:
+    app: myapp
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+...
+---
+# Set quota to a namespace
+apiVersion: v1
+kind: resourceQuota
+metadata:
+  name: dev-quota
+  namespace: dev
+spec:
+  hard:
+    pods: "10"
+    requests.cpu : "4"
+    requests.memory: 5Gi
+    limits.cpu: "10"
+    limits.memory: 10Gi
+...
